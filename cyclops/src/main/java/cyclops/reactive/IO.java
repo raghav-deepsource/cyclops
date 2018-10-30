@@ -3,6 +3,7 @@ package cyclops.reactive;
 import com.oath.cyclops.hkt.DataWitness.io;
 import com.oath.cyclops.hkt.Higher;
 import com.oath.cyclops.types.foldable.To;
+import com.oath.cyclops.types.functor.Transformable;
 import com.oath.cyclops.types.reactive.ValueSubscriber;
 import com.oath.cyclops.util.ExceptionSoftener;
 import cyclops.control.Either;
@@ -21,7 +22,12 @@ import cyclops.data.tuple.Tuple6;
 import cyclops.data.tuple.Tuple7;
 import com.oath.cyclops.types.functor.ReactiveTransformable;
 import cyclops.function.Function3;
+import cyclops.function.Function4;
+import cyclops.function.Function5;
+import cyclops.function.Function6;
+import cyclops.function.Function7;
 import cyclops.function.Memoize;
+import cyclops.function.checked.CheckedFunction;
 import cyclops.function.checked.CheckedSupplier;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -81,24 +87,55 @@ public interface IO<T> extends To<IO<T>>,Higher<io,T>,ReactiveTransformable<T>,P
         return io.flatMap(i -> i);
     }
 
+    @Override
+    default IO<T> peek(final Consumer<? super T> c) {
+        return map(in->{
+            c.accept(in);
+            return in;
+        });
+    }
+
+    default <R> IO<R> checkedMap(CheckedFunction<? super T, ? extends R> checkedFunction){
+        return map(ExceptionSoftener.softenFunction(checkedFunction));
+    }
     <R> IO<R> map(Function<? super T, ? extends R> s);
 
+    default <R> IO<R> checkedFlatMap(CheckedFunction<? super T, IO<? extends R>> checkedFunction){
+        return flatMap(ExceptionSoftener.softenFunction(checkedFunction));
+    }
     <R> IO<R> flatMap(Function<? super T, IO<? extends R>> s);
 
+    default <R> IO<R> concatMap(Function<? super T, Iterable<? extends R>> s){
+        return flatMap(i->sync(s.apply(i)));
+    }
+
+    default <R> IO<R> mergeMap(Function<? super T, Publisher<? extends R>> s){
+        return flatMap(i->fromPublisher(s.apply(i)));
+    }
+    default <R> IO<R> checkedRetry(CheckedFunction<? super T,? extends R> checkedFunction){
+        return retry(ExceptionSoftener.softenFunction(checkedFunction));
+    }
     @Override
     default <R> IO<R> retry(Function<? super T, ? extends R> fn) {
         return (IO<R>)ReactiveTransformable.super.retry(fn);
     }
-
+    default <R> IO<R> checkedRetry(CheckedFunction<? super T,? extends R> checkedFunction, int retries, long delay, TimeUnit timeUnit){
+        return retry(ExceptionSoftener.softenFunction(checkedFunction),retries,delay,timeUnit);
+    }
     @Override
     default <R> IO<R> retry(Function<? super T, ? extends R> fn, int retries, long delay, TimeUnit timeUnit) {
         return (IO<R>)ReactiveTransformable.super.retry(fn,retries,delay,timeUnit);
     }
 
-
+    default  <R extends AutoCloseable> IO<R> checkedBracket(CheckedFunction<? super T,? extends R> checkedFunction){
+        return bracket(ExceptionSoftener.softenFunction(checkedFunction));
+    }
     default <R extends AutoCloseable> IO<R> bracket(Function<? super T, ? extends R> fn) {
         Managed<R> m = Managed.of(map(fn));
         return m.io();
+    }
+    default <R> IO<R> checkedBracket(CheckedFunction<? super T,? extends R> checkedFunction, Consumer<R> consumer){
+        return bracket(ExceptionSoftener.softenFunction(checkedFunction),consumer);
     }
     default <R> IO<R> bracket(Function<? super T, ? extends R> fn, Consumer<R> consumer) {
         Managed<R> m = Managed.of(map(fn),consumer);
@@ -130,6 +167,7 @@ public interface IO<T> extends To<IO<T>>,Higher<io,T>,ReactiveTransformable<T>,P
     default <R, X extends Throwable> IO<Try<R, X>> mapTry(Function<? super T, ? extends R> s, Class<? extends X>... classes) {
         return map(t -> Try.withCatch(() -> s.apply(t), classes));
     }
+
 
     default void forEach(Consumer<? super T> consumerElement, Consumer<? super Throwable> consumerError, Runnable onComplete) {
         Spouts.from(publisher()).forEach(consumerElement, consumerError, onComplete);
@@ -169,15 +207,57 @@ public interface IO<T> extends To<IO<T>>,Higher<io,T>,ReactiveTransformable<T>,P
     }
 
     public static class Comprehensions {
+        public static <T, F, R1, R2, R3, R4,R5,R6,R7> IO<R7> forEach8(IO<T> io,
+                                                                       Function<? super T, IO<R1>> value2,
+                                                                       BiFunction<? super T, ? super R1, IO<R2>> value3,
+                                                                       Function3<? super T, ? super R1,? super  R2, IO<R3>> value4,
+                                                                       Function4<? super T, ? super R1,? super R2,? super R3, IO<R4>> value5,
+                                                                       Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, IO<R5>> value6,
+                                                                       Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, IO<R6>> value7,
+                                                                       Function7<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, ? super R6, IO<R7>> value8)
 
+        {
+
+            return io.flatMap(in -> {
+
+                IO<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    IO<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        IO<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            IO<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                IO<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e.flatMap(ine->{
+                                    IO<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
+                                    return f.flatMap(inf->{
+                                        IO<R7> g = value8.apply(in,ina,inb,inc,ind,ine,inf);
+                                        return g;
+                                    });
+                                });
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
         public static <T, F, R1, R2, R3, R4, R5, R6, R7> IO<R7> forEach(IO<T> io,
                                                                         Function<? super T, IO<R1>> value2,
-                                                                        Function<? super Tuple2<? super T, ? super R1>, IO<R2>> value3,
-                                                                        Function<? super Tuple3<? super T, ? super R1, ? super R2>, IO<R3>> value4,
-                                                                        Function<? super Tuple4<? super T, ? super R1, ? super R2, ? super R3>, IO<R4>> value5,
-                                                                        Function<? super Tuple5<T, ? super R1, ? super R2, ? super R3, ? super R4>, IO<R5>> value6,
-                                                                        Function<? super Tuple6<T, ? super R1, ? super R2, ? super R3, ? super R4, ? super R5>, IO<R6>> value7,
-                                                                        Function<? super Tuple7<T, ? super R1, ? super R2, ? super R3, ? super R4, ? super R5, ? super R6>, IO<R7>> value8
+                                                                        Function<? super Tuple2<T, R1>, IO<R2>> value3,
+                                                                        Function<? super Tuple3<T, R1, R2>, IO<R3>> value4,
+                                                                        Function<? super Tuple4<T, R1, R2, R3>, IO<R4>> value5,
+                                                                        Function<? super Tuple5<T,R1,R2, R3, R4>, IO<R5>> value6,
+                                                                        Function<? super Tuple6<T,R1,R2,R3, R4,R5>, IO<R6>> value7,
+                                                                        Function<? super Tuple7<T,R1,R2, R3, R4,R5, R6>, IO<R7>> value8
         ) {
 
             return io.flatMap(in -> {
@@ -215,14 +295,52 @@ public interface IO<T> extends To<IO<T>>,Higher<io,T>,ReactiveTransformable<T>,P
             });
 
         }
+        public static <T, F, R1, R2, R3, R4,R5,R6> IO<R6> forEach7(IO<T> io,
+                                                                    Function<? super T, IO<R1>> value2,
+                                                                    BiFunction<? super T, ? super R1, IO<R2>> value3,
+                                                                    Function3<? super T, ? super R1,? super  R2, IO<R3>> value4,
+                                                                    Function4<? super T, ? super R1,? super R2,? super R3, IO<R4>> value5,
+                                                                    Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, IO<R5>> value6,
+                                                                    Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, IO<R6>> value7)
 
+        {
+
+            return io.flatMap(in -> {
+
+                IO<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    IO<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        IO<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            IO<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                IO<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e.flatMap(ine->{
+                                    IO<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
+                                    return f;
+                                });
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
         public static <T, F, R1, R2, R3, R4, R5, R6> IO<R6> forEach(IO<T> io,
                                                                     Function<? super T, IO<R1>> value2,
-                                                                    Function<? super Tuple2<? super T, ? super R1>, IO<R2>> value3,
-                                                                    Function<? super Tuple3<? super T, ? super R1, ? super R2>, IO<R3>> value4,
-                                                                    Function<? super Tuple4<? super T, ? super R1, ? super R2, ? super R3>, IO<R4>> value5,
-                                                                    Function<? super Tuple5<T, ? super R1, ? super R2, ? super R3, ? super R4>, IO<R5>> value6,
-                                                                    Function<? super Tuple6<T, ? super R1, ? super R2, ? super R3, ? super R4, ? super R5>, IO<R6>> value7
+                                                                    Function<? super Tuple2<T, R1>, IO<R2>> value3,
+                                                                    Function<? super Tuple3<T, R1, R2>, IO<R3>> value4,
+                                                                    Function<? super Tuple4<T, R1, R2, R3>, IO<R4>> value5,
+                                                                    Function<? super Tuple5<T, R1, R2, R3, R4>, IO<R5>> value6,
+                                                                    Function<? super Tuple6<T,  R1, R2,  R3, R4, R5>, IO<R6>> value7
         ) {
 
             return io.flatMap(in -> {
@@ -256,12 +374,47 @@ public interface IO<T> extends To<IO<T>>,Higher<io,T>,ReactiveTransformable<T>,P
 
         }
 
+        public static <T, F, R1, R2, R3, R4,R5> IO<R5> forEach6(IO<T> io,
+                                                             Function<? super T, IO<R1>> value2,
+                                                             BiFunction<? super T, ? super R1, IO<R2>> value3,
+                                                             Function3<? super T, ? super R1,? super  R2, IO<R3>> value4,
+                                                             Function4<? super T, ? super R1,? super R2,? super R3, IO<R4>> value5,
+                                                                Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, IO<R5>> value6)
+
+         {
+
+            return io.flatMap(in -> {
+
+                IO<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    IO<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        IO<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            IO<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                IO<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e;
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
         public static <T, F, R1, R2, R3, R4, R5> IO<R5> forEach(IO<T> io,
                                                                 Function<? super T, IO<R1>> value2,
-                                                                Function<? super Tuple2<? super T, ? super R1>, IO<R2>> value3,
-                                                                Function<? super Tuple3<? super T, ? super R1, ? super R2>, IO<R3>> value4,
-                                                                Function<? super Tuple4<? super T, ? super R1, ? super R2, ? super R3>, IO<R4>> value5,
-                                                                Function<? super Tuple5<T, ? super R1, ? super R2, ? super R3, ? super R4>, IO<R5>> value6
+                                                                Function<? super Tuple2<T, R1>, IO<R2>> value3,
+                                                                Function<? super Tuple3<T, R1,R2>, IO<R3>> value4,
+                                                                Function<? super Tuple4<T, R1,R2,  R3>, IO<R4>> value5,
+                                                                Function<? super Tuple5<T, R1, R2, R3, R4>, IO<R5>> value6
         ) {
 
             return io.flatMap(in -> {
@@ -291,11 +444,42 @@ public interface IO<T> extends To<IO<T>>,Higher<io,T>,ReactiveTransformable<T>,P
 
         }
 
+        public static <T, F, R1, R2, R3, R4> IO<R4> forEach5(IO<T> io,
+                                                             Function<? super T, IO<R1>> value2,
+                                                             BiFunction<? super T, ? super R1, IO<R2>> value3,
+                                                             Function3<? super T, ? super R1,? super  R2, IO<R3>> value4,
+                                                             Function4<? super T, ? super R1,? super R2,? super R3, IO<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                IO<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    IO<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        IO<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            IO<R4> d = value5.apply(in, ina, inb, inc);
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
         public static <T, F, R1, R2, R3, R4> IO<R4> forEach(IO<T> io,
                                                             Function<? super T, IO<R1>> value2,
-                                                            Function<? super Tuple2<? super T, ? super R1>, IO<R2>> value3,
-                                                            Function<? super Tuple3<? super T, ? super R1, ? super R2>, IO<R3>> value4,
-                                                            Function<? super Tuple4<? super T, ? super R1, ? super R2, ? super R3>, IO<R4>> value5
+                                                            Function<? super Tuple2<T, R1>, IO<R2>> value3,
+                                                            Function<? super Tuple3<T, R1, R2>, IO<R3>> value4,
+                                                            Function<? super Tuple4<T, R1, R2, R3>, IO<R4>> value5
 
         ) {
 
@@ -323,10 +507,37 @@ public interface IO<T> extends To<IO<T>>,Higher<io,T>,ReactiveTransformable<T>,P
 
         }
 
+        public static <T, F, R1, R2, R3> IO<R3> forEach4(IO<T> io,
+                                                             Function<? super T, IO<R1>> value2,
+                                                             BiFunction<? super T, ? super R1, IO<R2>> value3,
+                                                             Function3<? super T, ? super R1,? super  R2, IO<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                IO<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    IO<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        IO<R3> c = value4.apply(in, ina, inb);
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
         public static <T, F, R1, R2, R3> IO<R3> forEach(IO<T> io,
                                                         Function<? super T, IO<R1>> value2,
-                                                        Function<? super Tuple2<? super T, ? super R1>, IO<R2>> value3,
-                                                        Function<? super Tuple3<? super T, ? super R1, ? super R2>, IO<R3>> value4
+                                                        Function<? super Tuple2<T,R1>, IO<R2>> value3,
+                                                        Function<? super Tuple3<T, R1, R2>, IO<R3>> value4
 
         ) {
 
@@ -350,7 +561,26 @@ public interface IO<T> extends To<IO<T>>,Higher<io,T>,ReactiveTransformable<T>,P
             });
 
         }
+        public static <T, F, R1, R2> IO<R2> forEach3(IO<T> io,
+                                                         Function<? super T, IO<R1>> value2,
+                                                         BiFunction<? super T, ? super R1, IO<R2>> value3
 
+        ) {
+
+            return io.flatMap(in -> {
+
+                IO<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    IO<R2> b = value3.apply(in, ina);
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
         public static <T, F, R1, R2> IO<R2> forEach(IO<T> io,
                                                     Function<? super T, IO<R1>> value2,
                                                     Function<? super Tuple2<T, R1>, IO<R2>> value3
@@ -371,7 +601,20 @@ public interface IO<T> extends To<IO<T>>,Higher<io,T>,ReactiveTransformable<T>,P
             });
 
         }
+        public static <T, F, R1> IO<R1> forEach2(IO<T> io,
+                                                     Function<? super T, IO<R1>> value2
 
+        ) {
+
+            return io.flatMap(in -> {
+
+                IO<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
         public static <T, F, R1> IO<R1> forEach(IO<T> io,
                                                 Function<? super T, IO<R1>> value2
 

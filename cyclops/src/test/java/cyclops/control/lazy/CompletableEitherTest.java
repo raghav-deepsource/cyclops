@@ -33,6 +33,19 @@ public class CompletableEitherTest {
         return completable;
     }
     @Test
+    public void completableFailTest(){
+        CompletableEither<Integer,Integer> completable = LazyEither.either();
+        LazyEither<Throwable,Integer> mapped = completable.map(i->i*2)
+            .flatMap(i-> LazyEither.right(i+1));
+
+        completable.complete(5);
+        System.out.println(mapped.getClass());
+        mapped.printOut();
+        assertThat(mapped.get(),equalTo(Option.some(11)));
+
+
+    }
+    @Test
     public void completableTest(){
         CompletableEither<Integer,Integer> completable = LazyEither.either();
         LazyEither<Throwable,Integer> mapped = completable.map(i->i*2)

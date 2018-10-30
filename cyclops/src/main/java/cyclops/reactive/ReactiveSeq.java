@@ -100,7 +100,7 @@ import java.util.stream.*;
  *      Empty handling
  *      Cycling / repeating
  *      Controlled iteration (forEach)
- *      Event handling (on next, on error, on complete)
+ *th      Event handling (on next, on error, on complete)
  *
  *
  * @author johnmcclean

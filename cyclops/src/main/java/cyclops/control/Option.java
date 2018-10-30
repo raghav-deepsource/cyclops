@@ -876,223 +876,431 @@ public interface Option<T> extends To<Option<T>>,
             return fn2.apply(this);
         }
     }
-  public static class Comprehensions {
+    public static class Comprehensions {
+        public static <T, F, R1, R2, R3, R4,R5,R6,R7> Option<R7> forEach8(Option<T> io,
+                                                                          Function<? super T, Option<R1>> value2,
+                                                                          BiFunction<? super T, ? super R1, Option<R2>> value3,
+                                                                          Function3<? super T, ? super R1,? super  R2, Option<R3>> value4,
+                                                                          Function4<? super T, ? super R1,? super R2,? super R3, Option<R4>> value5,
+                                                                          Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Option<R5>> value6,
+                                                                          Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, Option<R6>> value7,
+                                                                          Function7<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, ? super R6, Option<R7>> value8)
 
-    public static <T,F,R1, R2, R3,R4,R5,R6,R7> Option<R7> forEach(Option<T> option,
-                                                                        Function<? super T, ? extends Option<R1>> value2,
-                                                                        Function<? super Tuple2<? super T,? super R1>, ? extends Option<R2>> value3,
-                                                                        Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Option<R3>> value4,
-                                                                        Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Option<R4>> value5,
-                                                                        Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Option<R5>> value6,
-                                                                        Function<? super Tuple6<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5>, ? extends Option<R6>> value7,
-                                                                        Function<? super Tuple7<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5, ? super R6>, ? extends Option<R7>> value8
-    ) {
+        {
 
-      return option.flatMap(in -> {
+            return io.flatMap(in -> {
 
-        Option<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Option<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
 
-            Option<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
+                        Option<R3> c = value4.apply(in, ina, inb);
 
-            return c.flatMap(inc->{
-              Option<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d.flatMap(ind->{
-                Option<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
-                return e.flatMap(ine->{
-                  Option<R6> f = value7.apply(Tuple.tuple(in,ina,inb,inc,ind,ine));
-                  return f.flatMap(inf->{
-                    Option<R7> g = value8.apply(Tuple.tuple(in,ina,inb,inc,ind,ine,inf));
-                    return g;
+                        return c.flatMap(inc -> {
+                            Option<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                Option<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e.flatMap(ine->{
+                                    Option<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
+                                    return f.flatMap(inf->{
+                                        Option<R7> g = value8.apply(in,ina,inb,inc,ind,ine,inf);
+                                        return g;
+                                    });
+                                });
+                            });
+                        });
 
-                  });
+                    });
+
 
                 });
-              });
+
 
             });
 
-          });
+        }
+        public static <T, F, R1, R2, R3, R4, R5, R6, R7> Option<R7> forEach(Option<T> io,
+                                                                            Function<? super T, Option<R1>> value2,
+                                                                            Function<? super Tuple2<T, R1>, Option<R2>> value3,
+                                                                            Function<? super Tuple3<T, R1, R2>, Option<R3>> value4,
+                                                                            Function<? super Tuple4<T, R1, R2, R3>, Option<R4>> value5,
+                                                                            Function<? super Tuple5<T,R1,R2, R3, R4>, Option<R5>> value6,
+                                                                            Function<? super Tuple6<T,R1,R2,R3, R4,R5>, Option<R6>> value7,
+                                                                            Function<? super Tuple7<T,R1,R2, R3, R4,R5, R6>, Option<R7>> value8
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Option<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Option<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Option<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Option<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
+                                    return f.flatMap(inf -> {
+                                        Option<R7> g = value8.apply(Tuple.tuple(in, ina, inb, inc, ind, ine, inf));
+                                        return g;
+
+                                    });
+
+                                });
+                            });
+
+                        });
+
+                    });
 
 
-        });
-
-
-      });
-
-    }
-    public static <T,F,R1, R2, R3,R4,R5,R6> Option<R6> forEach(Option<T> option,
-                                                                     Function<? super T, ? extends Option<R1>> value2,
-                                                                     Function<? super Tuple2<? super T,? super R1>, ? extends Option<R2>> value3,
-                                                                     Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Option<R3>> value4,
-                                                                     Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Option<R4>> value5,
-                                                                     Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Option<R5>> value6,
-                                                                     Function<? super Tuple6<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5>, ? extends Option<R6>> value7
-    ) {
-
-      return option.flatMap(in -> {
-
-        Option<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Option<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Option<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c.flatMap(inc->{
-              Option<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d.flatMap(ind->{
-                Option<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
-                return e.flatMap(ine->{
-                  Option<R6> f = value7.apply(Tuple.tuple(in,ina,inb,inc,ind,ine));
-                  return f;
                 });
-              });
+
 
             });
 
-          });
+        }
+        public static <T, F, R1, R2, R3, R4,R5,R6> Option<R6> forEach7(Option<T> io,
+                                                                       Function<? super T, Option<R1>> value2,
+                                                                       BiFunction<? super T, ? super R1, Option<R2>> value3,
+                                                                       Function3<? super T, ? super R1,? super  R2, Option<R3>> value4,
+                                                                       Function4<? super T, ? super R1,? super R2,? super R3, Option<R4>> value5,
+                                                                       Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Option<R5>> value6,
+                                                                       Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, Option<R6>> value7)
+
+        {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Option<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Option<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                Option<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e.flatMap(ine->{
+                                    Option<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
+                                    return f;
+                                });
+                            });
+                        });
+
+                    });
 
 
-        });
+                });
 
 
-      });
-
-    }
-
-    public static <T,F,R1, R2, R3,R4,R5> Option<R5> forEach(Option<T> option,
-                                                                  Function<? super T, ? extends Option<R1>> value2,
-                                                                  Function<? super Tuple2<? super T,? super R1>, ? extends Option<R2>> value3,
-                                                                  Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Option<R3>> value4,
-                                                                  Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Option<R4>> value5,
-                                                                  Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Option<R5>> value6
-    ) {
-
-      return option.flatMap(in -> {
-
-        Option<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Option<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Option<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c.flatMap(inc->{
-              Option<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d.flatMap(ind->{
-                Option<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
-                return e;
-              });
             });
 
-          });
+        }
+        public static <T, F, R1, R2, R3, R4, R5, R6> Option<R6> forEach(Option<T> io,
+                                                                        Function<? super T, Option<R1>> value2,
+                                                                        Function<? super Tuple2<T, R1>, Option<R2>> value3,
+                                                                        Function<? super Tuple3<T, R1, R2>, Option<R3>> value4,
+                                                                        Function<? super Tuple4<T, R1, R2, R3>, Option<R4>> value5,
+                                                                        Function<? super Tuple5<T, R1, R2, R3, R4>, Option<R5>> value6,
+                                                                        Function<? super Tuple6<T,  R1, R2,  R3, R4, R5>, Option<R6>> value7
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Option<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Option<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Option<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Option<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
+                                    return f;
+                                });
+                            });
+
+                        });
+
+                    });
 
 
-        });
+                });
 
 
-      });
-
-    }
-    public static <T,F,R1, R2, R3,R4> Option<R4> forEach(Option<T> option,
-                                                               Function<? super T, ? extends Option<R1>> value2,
-                                                               Function<? super Tuple2<? super T,? super R1>, ? extends Option<R2>> value3,
-                                                               Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Option<R3>> value4,
-                                                               Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Option<R4>> value5
-
-    ) {
-
-      return option.flatMap(in -> {
-
-        Option<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Option<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Option<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c.flatMap(inc->{
-              Option<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d;
             });
 
-          });
+        }
+
+        public static <T, F, R1, R2, R3, R4,R5> Option<R5> forEach6(Option<T> io,
+                                                                    Function<? super T, Option<R1>> value2,
+                                                                    BiFunction<? super T, ? super R1, Option<R2>> value3,
+                                                                    Function3<? super T, ? super R1,? super  R2, Option<R3>> value4,
+                                                                    Function4<? super T, ? super R1,? super R2,? super R3, Option<R4>> value5,
+                                                                    Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Option<R5>> value6)
+
+        {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Option<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Option<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                Option<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e;
+                            });
+                        });
+
+                    });
 
 
-        });
+                });
 
 
-      });
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4, R5> Option<R5> forEach(Option<T> io,
+                                                                    Function<? super T, Option<R1>> value2,
+                                                                    Function<? super Tuple2<T, R1>, Option<R2>> value3,
+                                                                    Function<? super Tuple3<T, R1,R2>, Option<R3>> value4,
+                                                                    Function<? super Tuple4<T, R1,R2,  R3>, Option<R4>> value5,
+                                                                    Function<? super Tuple5<T, R1, R2, R3, R4>, Option<R5>> value6
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Option<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Option<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Option<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e;
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3, R4> Option<R4> forEach5(Option<T> io,
+                                                                 Function<? super T, Option<R1>> value2,
+                                                                 BiFunction<? super T, ? super R1, Option<R2>> value3,
+                                                                 Function3<? super T, ? super R1,? super  R2, Option<R3>> value4,
+                                                                 Function4<? super T, ? super R1,? super R2,? super R3, Option<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Option<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Option<R4> d = value5.apply(in, ina, inb, inc);
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4> Option<R4> forEach(Option<T> io,
+                                                                Function<? super T, Option<R1>> value2,
+                                                                Function<? super Tuple2<T, R1>, Option<R2>> value3,
+                                                                Function<? super Tuple3<T, R1, R2>, Option<R3>> value4,
+                                                                Function<? super Tuple4<T, R1, R2, R3>, Option<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Option<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Option<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3> Option<R3> forEach4(Option<T> io,
+                                                             Function<? super T, Option<R1>> value2,
+                                                             BiFunction<? super T, ? super R1, Option<R2>> value3,
+                                                             Function3<? super T, ? super R1,? super  R2, Option<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Option<R3> c = value4.apply(in, ina, inb);
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3> Option<R3> forEach(Option<T> io,
+                                                            Function<? super T, Option<R1>> value2,
+                                                            Function<? super Tuple2<T,R1>, Option<R2>> value3,
+                                                            Function<? super Tuple3<T, R1, R2>, Option<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Option<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2> Option<R2> forEach3(Option<T> io,
+                                                         Function<? super T, Option<R1>> value2,
+                                                         BiFunction<? super T, ? super R1, Option<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(in, ina);
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2> Option<R2> forEach(Option<T> io,
+                                                        Function<? super T, Option<R1>> value2,
+                                                        Function<? super Tuple2<T, R1>, Option<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Option<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1> Option<R1> forEach2(Option<T> io,
+                                                     Function<? super T, Option<R1>> value2
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
+        public static <T, F, R1> Option<R1> forEach(Option<T> io,
+                                                    Function<? super T, Option<R1>> value2
+
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Option<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
+
 
     }
-    public static <T,F,R1, R2, R3> Option<R3> forEach(Option<T> option,
-                                                            Function<? super T, ? extends Option<R1>> value2,
-                                                            Function<? super Tuple2<? super T,? super R1>, ? extends Option<R2>> value3,
-                                                            Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Option<R3>> value4
-
-    ) {
-
-      return option.flatMap(in -> {
-
-        Option<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Option<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Option<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c;
-
-          });
-
-
-        });
-
-
-      });
-
-    }
-    public static <T,F,R1, R2> Option<R2> forEach(Option<T> option,
-                                                        Function<? super T, ? extends Option<R1>> value2,
-                                                        Function<? super Tuple2<? super T,? super R1>, ? extends Option<R2>> value3
-
-    ) {
-
-      return option.flatMap(in -> {
-
-        Option<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Option<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b;
-
-
-        });
-
-
-      });
-
-    }
-    public static <T,F,R1> Option<R1> forEach(Option<T> option,
-                                                    Function<? super T, ? extends Option<R1>> value2
-
-
-    ) {
-
-      return option.flatMap(in -> {
-
-        Option<R1> a = value2.apply(in);
-        return a;
-
-
-      });
-
-    }
-
-
-  }
-
-
 }

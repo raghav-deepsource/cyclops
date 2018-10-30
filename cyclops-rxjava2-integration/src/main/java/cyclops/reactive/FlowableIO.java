@@ -91,7 +91,10 @@ public final class FlowableIO<T> implements IO<T> {
 
     @Override
     public ReactiveSeq<T> stream() {
-        return Spouts.from(flowable);
+        return FlowableReactiveSeq.reactiveSeq(flowable);
     }
-
+    @Override
+    public <R> IO<R> mergeMap(Function<? super T, Publisher<? extends R>> s) {
+        return of(flowable.flatMap(in->s.apply(in)));
+    }
 }

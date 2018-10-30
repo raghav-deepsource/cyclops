@@ -12,6 +12,12 @@ import com.oath.cyclops.types.recoverable.RecoverableFrom;
 import cyclops.data.tuple.Tuple;
 import cyclops.data.tuple.Tuple3;
 import cyclops.data.tuple.Tuple4;
+import cyclops.data.tuple.Tuple5;
+import cyclops.data.tuple.Tuple6;
+import cyclops.data.tuple.Tuple7;
+import cyclops.function.Function5;
+import cyclops.function.Function6;
+import cyclops.function.Function7;
 import cyclops.function.Monoid;
 import cyclops.function.Reducer;
 import com.oath.cyclops.hkt.DataWitness.future;
@@ -1266,4 +1272,432 @@ public class Future<T> implements To<Future<T>>,
   public static <T> Future<T> narrow(Future<? extends T> of) {
       return (Future<T>)of;
   }
+
+    public static class Comprehensions {
+        public static <T, F, R1, R2, R3, R4,R5,R6,R7> Future<R7> forEach8(Future<T> io,
+                                                                          Function<? super T, Future<R1>> value2,
+                                                                          BiFunction<? super T, ? super R1, Future<R2>> value3,
+                                                                          Function3<? super T, ? super R1,? super  R2, Future<R3>> value4,
+                                                                          Function4<? super T, ? super R1,? super R2,? super R3, Future<R4>> value5,
+                                                                          Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Future<R5>> value6,
+                                                                          Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, Future<R6>> value7,
+                                                                          Function7<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, ? super R6, Future<R7>> value8)
+
+        {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Future<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                Future<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e.flatMap(ine->{
+                                    Future<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
+                                    return f.flatMap(inf->{
+                                        Future<R7> g = value8.apply(in,ina,inb,inc,ind,ine,inf);
+                                        return g;
+                                    });
+                                });
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4, R5, R6, R7> Future<R7> forEach(Future<T> io,
+                                                                            Function<? super T, Future<R1>> value2,
+                                                                            Function<? super Tuple2<T, R1>, Future<R2>> value3,
+                                                                            Function<? super Tuple3<T, R1, R2>, Future<R3>> value4,
+                                                                            Function<? super Tuple4<T, R1, R2, R3>, Future<R4>> value5,
+                                                                            Function<? super Tuple5<T,R1,R2, R3, R4>, Future<R5>> value6,
+                                                                            Function<? super Tuple6<T,R1,R2,R3, R4,R5>, Future<R6>> value7,
+                                                                            Function<? super Tuple7<T,R1,R2, R3, R4,R5, R6>, Future<R7>> value8
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Future<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Future<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Future<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
+                                    return f.flatMap(inf -> {
+                                        Future<R7> g = value8.apply(Tuple.tuple(in, ina, inb, inc, ind, ine, inf));
+                                        return g;
+
+                                    });
+
+                                });
+                            });
+
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4,R5,R6> Future<R6> forEach7(Future<T> io,
+                                                                       Function<? super T, Future<R1>> value2,
+                                                                       BiFunction<? super T, ? super R1, Future<R2>> value3,
+                                                                       Function3<? super T, ? super R1,? super  R2, Future<R3>> value4,
+                                                                       Function4<? super T, ? super R1,? super R2,? super R3, Future<R4>> value5,
+                                                                       Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Future<R5>> value6,
+                                                                       Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, Future<R6>> value7)
+
+        {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Future<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                Future<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e.flatMap(ine->{
+                                    Future<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
+                                    return f;
+                                });
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4, R5, R6> Future<R6> forEach(Future<T> io,
+                                                                        Function<? super T, Future<R1>> value2,
+                                                                        Function<? super Tuple2<T, R1>, Future<R2>> value3,
+                                                                        Function<? super Tuple3<T, R1, R2>, Future<R3>> value4,
+                                                                        Function<? super Tuple4<T, R1, R2, R3>, Future<R4>> value5,
+                                                                        Function<? super Tuple5<T, R1, R2, R3, R4>, Future<R5>> value6,
+                                                                        Function<? super Tuple6<T,  R1, R2,  R3, R4, R5>, Future<R6>> value7
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Future<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Future<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Future<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
+                                    return f;
+                                });
+                            });
+
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3, R4,R5> Future<R5> forEach6(Future<T> io,
+                                                                    Function<? super T, Future<R1>> value2,
+                                                                    BiFunction<? super T, ? super R1, Future<R2>> value3,
+                                                                    Function3<? super T, ? super R1,? super  R2, Future<R3>> value4,
+                                                                    Function4<? super T, ? super R1,? super R2,? super R3, Future<R4>> value5,
+                                                                    Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Future<R5>> value6)
+
+        {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Future<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                Future<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e;
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4, R5> Future<R5> forEach(Future<T> io,
+                                                                    Function<? super T, Future<R1>> value2,
+                                                                    Function<? super Tuple2<T, R1>, Future<R2>> value3,
+                                                                    Function<? super Tuple3<T, R1,R2>, Future<R3>> value4,
+                                                                    Function<? super Tuple4<T, R1,R2,  R3>, Future<R4>> value5,
+                                                                    Function<? super Tuple5<T, R1, R2, R3, R4>, Future<R5>> value6
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Future<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Future<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e;
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3, R4> Future<R4> forEach5(Future<T> io,
+                                                                 Function<? super T, Future<R1>> value2,
+                                                                 BiFunction<? super T, ? super R1, Future<R2>> value3,
+                                                                 Function3<? super T, ? super R1,? super  R2, Future<R3>> value4,
+                                                                 Function4<? super T, ? super R1,? super R2,? super R3, Future<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Future<R4> d = value5.apply(in, ina, inb, inc);
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4> Future<R4> forEach(Future<T> io,
+                                                                Function<? super T, Future<R1>> value2,
+                                                                Function<? super Tuple2<T, R1>, Future<R2>> value3,
+                                                                Function<? super Tuple3<T, R1, R2>, Future<R3>> value4,
+                                                                Function<? super Tuple4<T, R1, R2, R3>, Future<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Future<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3> Future<R3> forEach4(Future<T> io,
+                                                             Function<? super T, Future<R1>> value2,
+                                                             BiFunction<? super T, ? super R1, Future<R2>> value3,
+                                                             Function3<? super T, ? super R1,? super  R2, Future<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(in, ina, inb);
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3> Future<R3> forEach(Future<T> io,
+                                                            Function<? super T, Future<R1>> value2,
+                                                            Function<? super Tuple2<T,R1>, Future<R2>> value3,
+                                                            Function<? super Tuple3<T, R1, R2>, Future<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Future<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2> Future<R2> forEach3(Future<T> io,
+                                                         Function<? super T, Future<R1>> value2,
+                                                         BiFunction<? super T, ? super R1, Future<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(in, ina);
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2> Future<R2> forEach(Future<T> io,
+                                                        Function<? super T, Future<R1>> value2,
+                                                        Function<? super Tuple2<T, R1>, Future<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Future<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1> Future<R1> forEach2(Future<T> io,
+                                                     Function<? super T, Future<R1>> value2
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
+        public static <T, F, R1> Future<R1> forEach(Future<T> io,
+                                                    Function<? super T, Future<R1>> value2
+
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Future<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
+
+
+    }
 }

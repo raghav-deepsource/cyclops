@@ -35,6 +35,7 @@ jar {
 repositories {
     mavenCentral()
     jcenter()
+    mavenLocal()
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -56,7 +57,8 @@ dependencies {
     compile 'io.kindedj:kindedj:'+kindedJVersion
     provided 'org.projectlombok:lombok:1.16.20'
     testCompile 'com.github.stefanbirkner:system-rules:1.10.0'
-    testCompile 'io.projectreactor:reactor-core:3.0.7.RELEASE'
+    testCompile 'io.projectreactor:reactor-core:3.2.1.RELEASE'
+    testCompile 'io.projectreactor:reactor-test:3.2.1.RELEASE'
     testCompile 'com.google.guava:guava:19.0'
     testCompile 'org.reactivestreams:reactive-streams-tck:1.0.0'
     testCompile 'junit:junit:4.12'

@@ -5,6 +5,9 @@ import com.oath.cyclops.hkt.Higher;
 import com.oath.cyclops.types.MonadicValue;
 import com.oath.cyclops.types.Present;
 import cyclops.data.tuple.*;
+import cyclops.function.Function5;
+import cyclops.function.Function6;
+import cyclops.function.Function7;
 import cyclops.function.checked.CheckedSupplier;
 import cyclops.reactive.Spouts;
 import com.oath.cyclops.types.reactive.Completable;
@@ -1354,223 +1357,433 @@ public interface Maybe<T> extends Option<T> {
 
 
 
-  public static class Comprehensions {
+    public static class Comprehensions {
+        public static <T, F, R1, R2, R3, R4, R5, R6, R7> Maybe<R7> forEach8(Maybe<T> io,
+                                                                            Function<? super T, Maybe<R1>> value2,
+                                                                            BiFunction<? super T, ? super R1, Maybe<R2>> value3,
+                                                                            Function3<? super T, ? super R1, ? super R2, Maybe<R3>> value4,
+                                                                            Function4<? super T, ? super R1, ? super R2, ? super R3, Maybe<R4>> value5,
+                                                                            Function5<? super T, ? super R1, ? super R2, ? super R3, ? super R4, Maybe<R5>> value6,
+                                                                            Function6<? super T, ? super R1, ? super R2, ? super R3, ? super R4, ? super R5, Maybe<R6>> value7,
+                                                                            Function7<? super T, ? super R1, ? super R2, ? super R3, ? super R4, ? super R5, ? super R6, Maybe<R7>> value8) {
 
-    public static <T,F,R1, R2, R3,R4,R5,R6,R7> Maybe<R7> forEach(Maybe<T> free,
-                                                                        Function<? super T, ? extends Maybe<R1>> value2,
-                                                                        Function<? super Tuple2<? super T,? super R1>, ? extends Maybe<R2>> value3,
-                                                                        Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Maybe<R3>> value4,
-                                                                        Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Maybe<R4>> value5,
-                                                                        Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Maybe<R5>> value6,
-                                                                        Function<? super Tuple6<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5>, ? extends Maybe<R6>> value7,
-                                                                        Function<? super Tuple7<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5, ? super R6>, ? extends Maybe<R7>> value8
-    ) {
+            return io.flatMap(in -> {
 
-      return free.flatMap(in -> {
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
 
-        Maybe<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Maybe<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
+                        Maybe<R3> c = value4.apply(in, ina, inb);
 
-            Maybe<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
+                        return c.flatMap(inc -> {
+                            Maybe<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind -> {
+                                Maybe<R5> e = value6.apply(in, ina, inb, inc, ind);
+                                return e.flatMap(ine -> {
+                                    Maybe<R6> f = value7.apply(in, ina, inb, inc, ind, ine);
+                                    return f.flatMap(inf -> {
+                                        Maybe<R7> g = value8.apply(in, ina, inb, inc, ind, ine, inf);
+                                        return g;
+                                    });
+                                });
+                            });
+                        });
 
-            return c.flatMap(inc->{
-              Maybe<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d.flatMap(ind->{
-                Maybe<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
-                return e.flatMap(ine->{
-                  Maybe<R6> f = value7.apply(Tuple.tuple(in,ina,inb,inc,ind,ine));
-                  return f.flatMap(inf->{
-                    Maybe<R7> g = value8.apply(Tuple.tuple(in,ina,inb,inc,ind,ine,inf));
-                    return g;
+                    });
 
-                  });
 
                 });
-              });
+
 
             });
 
-          });
+        }
+
+        public static <T, F, R1, R2, R3, R4, R5, R6, R7> Maybe<R7> forEach(Maybe<T> io,
+                                                                           Function<? super T, Maybe<R1>> value2,
+                                                                           Function<? super Tuple2<T, R1>, Maybe<R2>> value3,
+                                                                           Function<? super Tuple3<T, R1, R2>, Maybe<R3>> value4,
+                                                                           Function<? super Tuple4<T, R1, R2, R3>, Maybe<R4>> value5,
+                                                                           Function<? super Tuple5<T, R1, R2, R3, R4>, Maybe<R5>> value6,
+                                                                           Function<? super Tuple6<T, R1, R2, R3, R4, R5>, Maybe<R6>> value7,
+                                                                           Function<? super Tuple7<T, R1, R2, R3, R4, R5, R6>, Maybe<R7>> value8
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Maybe<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Maybe<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Maybe<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Maybe<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
+                                    return f.flatMap(inf -> {
+                                        Maybe<R7> g = value8.apply(Tuple.tuple(in, ina, inb, inc, ind, ine, inf));
+                                        return g;
+
+                                    });
+
+                                });
+                            });
+
+                        });
+
+                    });
 
 
-        });
-
-
-      });
-
-    }
-    public static <T,F,R1, R2, R3,R4,R5,R6> Maybe<R6> forEach(Maybe<T> free,
-                                                                     Function<? super T, ? extends Maybe<R1>> value2,
-                                                                     Function<? super Tuple2<? super T,? super R1>, ? extends Maybe<R2>> value3,
-                                                                     Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Maybe<R3>> value4,
-                                                                     Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Maybe<R4>> value5,
-                                                                     Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Maybe<R5>> value6,
-                                                                     Function<? super Tuple6<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5>, ? extends Maybe<R6>> value7
-    ) {
-
-      return free.flatMap(in -> {
-
-        Maybe<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Maybe<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Maybe<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c.flatMap(inc->{
-              Maybe<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d.flatMap(ind->{
-                Maybe<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
-                return e.flatMap(ine->{
-                  Maybe<R6> f = value7.apply(Tuple.tuple(in,ina,inb,inc,ind,ine));
-                  return f;
                 });
-              });
+
 
             });
 
-          });
+        }
+
+        public static <T, F, R1, R2, R3, R4, R5, R6> Maybe<R6> forEach7(Maybe<T> io,
+                                                                        Function<? super T, Maybe<R1>> value2,
+                                                                        BiFunction<? super T, ? super R1, Maybe<R2>> value3,
+                                                                        Function3<? super T, ? super R1, ? super R2, Maybe<R3>> value4,
+                                                                        Function4<? super T, ? super R1, ? super R2, ? super R3, Maybe<R4>> value5,
+                                                                        Function5<? super T, ? super R1, ? super R2, ? super R3, ? super R4, Maybe<R5>> value6,
+                                                                        Function6<? super T, ? super R1, ? super R2, ? super R3, ? super R4, ? super R5, Maybe<R6>> value7) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Maybe<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Maybe<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind -> {
+                                Maybe<R5> e = value6.apply(in, ina, inb, inc, ind);
+                                return e.flatMap(ine -> {
+                                    Maybe<R6> f = value7.apply(in, ina, inb, inc, ind, ine);
+                                    return f;
+                                });
+                            });
+                        });
+
+                    });
 
 
-        });
+                });
 
 
-      });
-
-    }
-
-    public static <T,F,R1, R2, R3,R4,R5> Maybe<R5> forEach(Maybe<T> free,
-                                                                  Function<? super T, ? extends Maybe<R1>> value2,
-                                                                  Function<? super Tuple2<? super T,? super R1>, ? extends Maybe<R2>> value3,
-                                                                  Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Maybe<R3>> value4,
-                                                                  Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Maybe<R4>> value5,
-                                                                  Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Maybe<R5>> value6
-    ) {
-
-      return free.flatMap(in -> {
-
-        Maybe<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Maybe<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Maybe<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c.flatMap(inc->{
-              Maybe<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d.flatMap(ind->{
-                Maybe<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
-                return e;
-              });
             });
 
-          });
+        }
+
+        public static <T, F, R1, R2, R3, R4, R5, R6> Maybe<R6> forEach(Maybe<T> io,
+                                                                       Function<? super T, Maybe<R1>> value2,
+                                                                       Function<? super Tuple2<T, R1>, Maybe<R2>> value3,
+                                                                       Function<? super Tuple3<T, R1, R2>, Maybe<R3>> value4,
+                                                                       Function<? super Tuple4<T, R1, R2, R3>, Maybe<R4>> value5,
+                                                                       Function<? super Tuple5<T, R1, R2, R3, R4>, Maybe<R5>> value6,
+                                                                       Function<? super Tuple6<T, R1, R2, R3, R4, R5>, Maybe<R6>> value7
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Maybe<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Maybe<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Maybe<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Maybe<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
+                                    return f;
+                                });
+                            });
+
+                        });
+
+                    });
 
 
-        });
+                });
 
 
-      });
-
-    }
-    public static <T,F,R1, R2, R3,R4> Maybe<R4> forEach(Maybe<T> free,
-                                                               Function<? super T, ? extends Maybe<R1>> value2,
-                                                               Function<? super Tuple2<? super T,? super R1>, ? extends Maybe<R2>> value3,
-                                                               Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Maybe<R3>> value4,
-                                                               Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Maybe<R4>> value5
-
-    ) {
-
-      return free.flatMap(in -> {
-
-        Maybe<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Maybe<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Maybe<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c.flatMap(inc->{
-              Maybe<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d;
             });
 
-          });
+        }
+
+        public static <T, F, R1, R2, R3, R4, R5> Maybe<R5> forEach6(Maybe<T> io,
+                                                                    Function<? super T, Maybe<R1>> value2,
+                                                                    BiFunction<? super T, ? super R1, Maybe<R2>> value3,
+                                                                    Function3<? super T, ? super R1, ? super R2, Maybe<R3>> value4,
+                                                                    Function4<? super T, ? super R1, ? super R2, ? super R3, Maybe<R4>> value5,
+                                                                    Function5<? super T, ? super R1, ? super R2, ? super R3, ? super R4, Maybe<R5>> value6) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Maybe<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Maybe<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind -> {
+                                Maybe<R5> e = value6.apply(in, ina, inb, inc, ind);
+                                return e;
+                            });
+                        });
+
+                    });
 
 
-        });
+                });
 
 
-      });
+            });
 
+        }
+
+        public static <T, F, R1, R2, R3, R4, R5> Maybe<R5> forEach(Maybe<T> io,
+                                                                   Function<? super T, Maybe<R1>> value2,
+                                                                   Function<? super Tuple2<T, R1>, Maybe<R2>> value3,
+                                                                   Function<? super Tuple3<T, R1, R2>, Maybe<R3>> value4,
+                                                                   Function<? super Tuple4<T, R1, R2, R3>, Maybe<R4>> value5,
+                                                                   Function<? super Tuple5<T, R1, R2, R3, R4>, Maybe<R5>> value6
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Maybe<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Maybe<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Maybe<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e;
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3, R4> Maybe<R4> forEach5(Maybe<T> io,
+                                                                Function<? super T, Maybe<R1>> value2,
+                                                                BiFunction<? super T, ? super R1, Maybe<R2>> value3,
+                                                                Function3<? super T, ? super R1, ? super R2, Maybe<R3>> value4,
+                                                                Function4<? super T, ? super R1, ? super R2, ? super R3, Maybe<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Maybe<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Maybe<R4> d = value5.apply(in, ina, inb, inc);
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3, R4> Maybe<R4> forEach(Maybe<T> io,
+                                                               Function<? super T, Maybe<R1>> value2,
+                                                               Function<? super Tuple2<T, R1>, Maybe<R2>> value3,
+                                                               Function<? super Tuple3<T, R1, R2>, Maybe<R3>> value4,
+                                                               Function<? super Tuple4<T, R1, R2, R3>, Maybe<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Maybe<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Maybe<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3> Maybe<R3> forEach4(Maybe<T> io,
+                                                            Function<? super T, Maybe<R1>> value2,
+                                                            BiFunction<? super T, ? super R1, Maybe<R2>> value3,
+                                                            Function3<? super T, ? super R1, ? super R2, Maybe<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Maybe<R3> c = value4.apply(in, ina, inb);
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3> Maybe<R3> forEach(Maybe<T> io,
+                                                           Function<? super T, Maybe<R1>> value2,
+                                                           Function<? super Tuple2<T, R1>, Maybe<R2>> value3,
+                                                           Function<? super Tuple3<T, R1, R2>, Maybe<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Maybe<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2> Maybe<R2> forEach3(Maybe<T> io,
+                                                        Function<? super T, Maybe<R1>> value2,
+                                                        BiFunction<? super T, ? super R1, Maybe<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(in, ina);
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2> Maybe<R2> forEach(Maybe<T> io,
+                                                       Function<? super T, Maybe<R1>> value2,
+                                                       Function<? super Tuple2<T, R1>, Maybe<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Maybe<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1> Maybe<R1> forEach2(Maybe<T> io,
+                                                    Function<? super T, Maybe<R1>> value2
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
+
+        public static <T, F, R1> Maybe<R1> forEach(Maybe<T> io,
+                                                   Function<? super T, Maybe<R1>> value2
+
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Maybe<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
     }
-    public static <T,F,R1, R2, R3> Maybe<R3> forEach(Maybe<T> free,
-                                                            Function<? super T, ? extends Maybe<R1>> value2,
-                                                            Function<? super Tuple2<? super T,? super R1>, ? extends Maybe<R2>> value3,
-                                                            Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Maybe<R3>> value4
-
-    ) {
-
-      return free.flatMap(in -> {
-
-        Maybe<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Maybe<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Maybe<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c;
-
-          });
-
-
-        });
-
-
-      });
-
-    }
-    public static <T,F,R1, R2> Maybe<R2> forEach(Maybe<T> free,
-                                                        Function<? super T, ? extends Maybe<R1>> value2,
-                                                        Function<? super Tuple2<? super T,? super R1>, ? extends Maybe<R2>> value3
-
-    ) {
-
-      return free.flatMap(in -> {
-
-        Maybe<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Maybe<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b;
-
-
-        });
-
-
-      });
-
-    }
-    public static <T,F,R1> Maybe<R1> forEach(Maybe<T> free,
-                                                    Function<? super T, ? extends Maybe<R1>> value2
-
-
-    ) {
-
-      return free.flatMap(in -> {
-
-        Maybe<R1> a = value2.apply(in);
-        return a;
-
-
-      });
-
-    }
-
-
-  }
-
-
 }

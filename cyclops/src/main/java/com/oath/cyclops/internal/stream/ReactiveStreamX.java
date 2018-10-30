@@ -1319,7 +1319,6 @@ public class ReactiveStreamX<T> extends BaseExtendedStream<T> {
         Future<R> future = Future.future();
         R container = supplier.get();
         forEach(e -> accumulator.accept(container, e), this.defaultErrorHandler, () -> future.complete(container));
-        //@TODO - switch to visit and use the error handler?
         return future.getFuture().join();
     }
 

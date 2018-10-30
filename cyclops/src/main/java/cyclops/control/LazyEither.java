@@ -175,7 +175,7 @@ public interface LazyEither<LT, RT> extends Either<LT, RT> {
      * @param <RT>
      * @return
      */
-    static <RT> CompletableEither<RT,RT> either(){
+    static <LT,RT> CompletableEither<RT,RT> either(){
         Completable.CompletablePublisher<RT> c = new Completable.CompletablePublisher<RT>();
         return new LazyEither.CompletableEither<RT, RT>(c,fromFuture(Future.fromPublisher(c)));
     }

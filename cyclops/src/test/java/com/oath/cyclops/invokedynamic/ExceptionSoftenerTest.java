@@ -6,7 +6,9 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.channels.ClosedChannelException;
 import java.util.function.Supplier;
 
 import com.oath.cyclops.util.ExceptionSoftener;
@@ -14,7 +16,21 @@ import org.junit.Test;
 
 public class ExceptionSoftenerTest {
 
-	@Test(expected=IOException.class)
+    @Test
+    public void castOrThrow(){
+        IOException io = new IOException("hello");
+        IOException ex =  ExceptionSoftener.castOrThrow(io,IOException.class);
+        IOException ex2 =  ExceptionSoftener.castOrThrow(new FileNotFoundException("hello"),IOException.class);
+    }
+
+    @Test(expected = ClosedChannelException.class)
+    public void castOrThrowError(){
+        IOException io = new ClosedChannelException();
+        IOException ex =  ExceptionSoftener.castOrThrow(io,FileNotFoundException.class);
+
+    }
+
+    @Test(expected=IOException.class)
 	public void checked() {
 		throw ExceptionSoftener.throwSoftenedException(new IOException("hello"));
 	}

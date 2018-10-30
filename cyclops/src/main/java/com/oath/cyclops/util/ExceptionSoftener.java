@@ -682,6 +682,12 @@ public class ExceptionSoftener {
             throw ExceptionSoftener.<RuntimeException> uncheck(e);
     }
 
+    public static <X extends Throwable> X castOrThrow(final Throwable in, Class<X> clazz){
+        if(clazz.isAssignableFrom(in.getClass()))
+            return (X)in;
+        throw throwSoftenedException(in);
+    }
+
     /**
      * Throw the exception as upwards if the predicate holds, otherwise pass to the handler
      *

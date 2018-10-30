@@ -928,223 +928,431 @@ public interface Eval<T> extends To<Eval<T>>,Function0<T>,
     }
 
 
-  public static class Comprehensions {
+    public static class Comprehensions {
+        public static <T, F, R1, R2, R3, R4,R5,R6,R7> Eval<R7> forEach8(Eval<T> io,
+                                                                        Function<? super T, Eval<R1>> value2,
+                                                                        BiFunction<? super T, ? super R1, Eval<R2>> value3,
+                                                                        Function3<? super T, ? super R1,? super  R2, Eval<R3>> value4,
+                                                                        Function4<? super T, ? super R1,? super R2,? super R3, Eval<R4>> value5,
+                                                                        Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Eval<R5>> value6,
+                                                                        Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, Eval<R6>> value7,
+                                                                        Function7<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, ? super R6, Eval<R7>> value8)
 
-    public static <T,F,R1, R2, R3,R4,R5,R6,R7> Eval<R7> forEach(Eval<T> eval,
-                                                                Function<? super T, ? extends Eval<R1>> value2,
-                                                                Function<? super Tuple2<? super T,? super R1>, ? extends Eval<R2>> value3,
-                                                                Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Eval<R3>> value4,
-                                                                Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Eval<R4>> value5,
-                                                                Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Eval<R5>> value6,
-                                                                Function<? super Tuple6<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5>, ? extends Eval<R6>> value7,
-                                                                Function<? super Tuple7<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5, ? super R6>, ? extends Eval<R7>> value8
-    ) {
+        {
 
-      return eval.flatMap(in -> {
+            return io.flatMap(in -> {
 
-        Eval<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Eval<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
 
-            Eval<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
+                        Eval<R3> c = value4.apply(in, ina, inb);
 
-            return c.flatMap(inc->{
-              Eval<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d.flatMap(ind->{
-                Eval<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
-                return e.flatMap(ine->{
-                  Eval<R6> f = value7.apply(Tuple.tuple(in,ina,inb,inc,ind,ine));
-                  return f.flatMap(inf->{
-                    Eval<R7> g = value8.apply(Tuple.tuple(in,ina,inb,inc,ind,ine,inf));
-                    return g;
+                        return c.flatMap(inc -> {
+                            Eval<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                Eval<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e.flatMap(ine->{
+                                    Eval<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
+                                    return f.flatMap(inf->{
+                                        Eval<R7> g = value8.apply(in,ina,inb,inc,ind,ine,inf);
+                                        return g;
+                                    });
+                                });
+                            });
+                        });
 
-                  });
+                    });
+
 
                 });
-              });
+
 
             });
 
-          });
+        }
+        public static <T, F, R1, R2, R3, R4, R5, R6, R7> Eval<R7> forEach(Eval<T> io,
+                                                                          Function<? super T, Eval<R1>> value2,
+                                                                          Function<? super Tuple2<T, R1>, Eval<R2>> value3,
+                                                                          Function<? super Tuple3<T, R1, R2>, Eval<R3>> value4,
+                                                                          Function<? super Tuple4<T, R1, R2, R3>, Eval<R4>> value5,
+                                                                          Function<? super Tuple5<T,R1,R2, R3, R4>, Eval<R5>> value6,
+                                                                          Function<? super Tuple6<T,R1,R2,R3, R4,R5>, Eval<R6>> value7,
+                                                                          Function<? super Tuple7<T,R1,R2, R3, R4,R5, R6>, Eval<R7>> value8
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Eval<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Eval<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Eval<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Eval<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
+                                    return f.flatMap(inf -> {
+                                        Eval<R7> g = value8.apply(Tuple.tuple(in, ina, inb, inc, ind, ine, inf));
+                                        return g;
+
+                                    });
+
+                                });
+                            });
+
+                        });
+
+                    });
 
 
-        });
-
-
-      });
-
-    }
-    public static <T,F,R1, R2, R3,R4,R5,R6> Eval<R6> forEach(Eval<T> eval,
-                                                             Function<? super T, ? extends Eval<R1>> value2,
-                                                             Function<? super Tuple2<? super T,? super R1>, ? extends Eval<R2>> value3,
-                                                             Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Eval<R3>> value4,
-                                                             Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Eval<R4>> value5,
-                                                             Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Eval<R5>> value6,
-                                                             Function<? super Tuple6<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5>, ? extends Eval<R6>> value7
-    ) {
-
-      return eval.flatMap(in -> {
-
-        Eval<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Eval<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Eval<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c.flatMap(inc->{
-              Eval<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d.flatMap(ind->{
-                Eval<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
-                return e.flatMap(ine->{
-                  Eval<R6> f = value7.apply(Tuple.tuple(in,ina,inb,inc,ind,ine));
-                  return f;
                 });
-              });
+
 
             });
 
-          });
+        }
+        public static <T, F, R1, R2, R3, R4,R5,R6> Eval<R6> forEach7(Eval<T> io,
+                                                                     Function<? super T, Eval<R1>> value2,
+                                                                     BiFunction<? super T, ? super R1, Eval<R2>> value3,
+                                                                     Function3<? super T, ? super R1,? super  R2, Eval<R3>> value4,
+                                                                     Function4<? super T, ? super R1,? super R2,? super R3, Eval<R4>> value5,
+                                                                     Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Eval<R5>> value6,
+                                                                     Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, Eval<R6>> value7)
+
+        {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Eval<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Eval<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                Eval<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e.flatMap(ine->{
+                                    Eval<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
+                                    return f;
+                                });
+                            });
+                        });
+
+                    });
 
 
-        });
+                });
 
 
-      });
-
-    }
-
-    public static <T,F,R1, R2, R3,R4,R5> Eval<R5> forEach(Eval<T> eval,
-                                                          Function<? super T, ? extends Eval<R1>> value2,
-                                                          Function<? super Tuple2<? super T,? super R1>, ? extends Eval<R2>> value3,
-                                                          Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Eval<R3>> value4,
-                                                          Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Eval<R4>> value5,
-                                                          Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Eval<R5>> value6
-    ) {
-
-      return eval.flatMap(in -> {
-
-        Eval<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Eval<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Eval<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c.flatMap(inc->{
-              Eval<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d.flatMap(ind->{
-                Eval<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
-                return e;
-              });
             });
 
-          });
+        }
+        public static <T, F, R1, R2, R3, R4, R5, R6> Eval<R6> forEach(Eval<T> io,
+                                                                      Function<? super T, Eval<R1>> value2,
+                                                                      Function<? super Tuple2<T, R1>, Eval<R2>> value3,
+                                                                      Function<? super Tuple3<T, R1, R2>, Eval<R3>> value4,
+                                                                      Function<? super Tuple4<T, R1, R2, R3>, Eval<R4>> value5,
+                                                                      Function<? super Tuple5<T, R1, R2, R3, R4>, Eval<R5>> value6,
+                                                                      Function<? super Tuple6<T,  R1, R2,  R3, R4, R5>, Eval<R6>> value7
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Eval<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Eval<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Eval<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Eval<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
+                                    return f;
+                                });
+                            });
+
+                        });
+
+                    });
 
 
-        });
+                });
 
 
-      });
-
-    }
-    public static <T,F,R1, R2, R3,R4> Eval<R4> forEach(Eval<T> eval,
-                                                       Function<? super T, ? extends Eval<R1>> value2,
-                                                       Function<? super Tuple2<? super T,? super R1>, ? extends Eval<R2>> value3,
-                                                       Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Eval<R3>> value4,
-                                                       Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Eval<R4>> value5
-
-    ) {
-
-      return eval.flatMap(in -> {
-
-        Eval<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Eval<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Eval<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c.flatMap(inc->{
-              Eval<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
-              return d;
             });
 
-          });
+        }
+
+        public static <T, F, R1, R2, R3, R4,R5> Eval<R5> forEach6(Eval<T> io,
+                                                                  Function<? super T, Eval<R1>> value2,
+                                                                  BiFunction<? super T, ? super R1, Eval<R2>> value3,
+                                                                  Function3<? super T, ? super R1,? super  R2, Eval<R3>> value4,
+                                                                  Function4<? super T, ? super R1,? super R2,? super R3, Eval<R4>> value5,
+                                                                  Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Eval<R5>> value6)
+
+        {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Eval<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Eval<R4> d = value5.apply(in, ina, inb, inc);
+                            return d.flatMap(ind->{
+                                Eval<R5> e = value6.apply(in,ina,inb,inc,ind);
+                                return e;
+                            });
+                        });
+
+                    });
 
 
-        });
+                });
 
 
-      });
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4, R5> Eval<R5> forEach(Eval<T> io,
+                                                                  Function<? super T, Eval<R1>> value2,
+                                                                  Function<? super Tuple2<T, R1>, Eval<R2>> value3,
+                                                                  Function<? super Tuple3<T, R1,R2>, Eval<R3>> value4,
+                                                                  Function<? super Tuple4<T, R1,R2,  R3>, Eval<R4>> value5,
+                                                                  Function<? super Tuple5<T, R1, R2, R3, R4>, Eval<R5>> value6
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Eval<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Eval<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Eval<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e;
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3, R4> Eval<R4> forEach5(Eval<T> io,
+                                                               Function<? super T, Eval<R1>> value2,
+                                                               BiFunction<? super T, ? super R1, Eval<R2>> value3,
+                                                               Function3<? super T, ? super R1,? super  R2, Eval<R3>> value4,
+                                                               Function4<? super T, ? super R1,? super R2,? super R3, Eval<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Eval<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Eval<R4> d = value5.apply(in, ina, inb, inc);
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4> Eval<R4> forEach(Eval<T> io,
+                                                              Function<? super T, Eval<R1>> value2,
+                                                              Function<? super Tuple2<T, R1>, Eval<R2>> value3,
+                                                              Function<? super Tuple3<T, R1, R2>, Eval<R3>> value4,
+                                                              Function<? super Tuple4<T, R1, R2, R3>, Eval<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Eval<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Eval<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3> Eval<R3> forEach4(Eval<T> io,
+                                                           Function<? super T, Eval<R1>> value2,
+                                                           BiFunction<? super T, ? super R1, Eval<R2>> value3,
+                                                           Function3<? super T, ? super R1,? super  R2, Eval<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Eval<R3> c = value4.apply(in, ina, inb);
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3> Eval<R3> forEach(Eval<T> io,
+                                                          Function<? super T, Eval<R1>> value2,
+                                                          Function<? super Tuple2<T,R1>, Eval<R2>> value3,
+                                                          Function<? super Tuple3<T, R1, R2>, Eval<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Eval<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2> Eval<R2> forEach3(Eval<T> io,
+                                                       Function<? super T, Eval<R1>> value2,
+                                                       BiFunction<? super T, ? super R1, Eval<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(in, ina);
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2> Eval<R2> forEach(Eval<T> io,
+                                                      Function<? super T, Eval<R1>> value2,
+                                                      Function<? super Tuple2<T, R1>, Eval<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Eval<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1> Eval<R1> forEach2(Eval<T> io,
+                                                   Function<? super T, Eval<R1>> value2
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
+        public static <T, F, R1> Eval<R1> forEach(Eval<T> io,
+                                                  Function<? super T, Eval<R1>> value2
+
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Eval<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
+
 
     }
-    public static <T,F,R1, R2, R3> Eval<R3> forEach(Eval<T> eval,
-                                                    Function<? super T, ? extends Eval<R1>> value2,
-                                                    Function<? super Tuple2<? super T,? super R1>, ? extends Eval<R2>> value3,
-                                                    Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Eval<R3>> value4
-
-    ) {
-
-      return eval.flatMap(in -> {
-
-        Eval<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Eval<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b.flatMap(inb -> {
-
-            Eval<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
-
-            return c;
-
-          });
-
-
-        });
-
-
-      });
-
-    }
-    public static <T,F,R1, R2> Eval<R2> forEach(Eval<T> eval,
-                                                Function<? super T, ? extends Eval<R1>> value2,
-                                                Function<? super Tuple2<? super T,? super R1>, ? extends Eval<R2>> value3
-
-    ) {
-
-      return eval.flatMap(in -> {
-
-        Eval<R1> a = value2.apply(in);
-        return a.flatMap(ina -> {
-          Eval<R2> b = value3.apply(Tuple.tuple(in,ina));
-          return b;
-
-
-        });
-
-
-      });
-
-    }
-    public static <T,F,R1> Eval<R1> forEach(Eval<T> eval,
-                                            Function<? super T, ? extends Eval<R1>> value2
-
-
-    ) {
-
-      return eval.flatMap(in -> {
-
-        Eval<R1> a = value2.apply(in);
-        return a;
-
-
-      });
-
-    }
-
-
-  }
-
-
 }

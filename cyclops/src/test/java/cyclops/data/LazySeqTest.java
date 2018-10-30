@@ -74,6 +74,8 @@ public class LazySeqTest extends BaseImmutableListTest {
          **/
     }
 
+
+
   @Test
   public void testLazy(){
     of(1,2,3,4).map(i->count++);

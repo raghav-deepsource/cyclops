@@ -6,9 +6,7 @@ import org.reactivestreams.Subscriber;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Created by johnmcclean on 26/01/2017.
- */
+
 public interface Completable<T> {
 
     boolean isFailed();

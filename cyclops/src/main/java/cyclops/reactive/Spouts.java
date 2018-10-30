@@ -569,11 +569,13 @@ public interface Spouts {
     static <U, T> ReactiveSeq<T> unfold(final U seed, final Function<? super U, Option<Tuple2<T, U>>> unfolder) {
         return reactiveStream(new SpliteratorToOperator<T>(new UnfoldSpliterator<>(seed, unfolder)));
     }
+    @Deprecated
     public static  <T> ReactiveSeq<T> concat(Publisher<Publisher<T>> pubs){
 
         return reactiveStream(new ArrayConcatonatingOperator<T>(Spouts.from(pubs).seq()
                 .map(p->new PublisherToOperator<T>(p))));
     }
+    @Deprecated
     public static  <T> ReactiveSeq<T> lazyConcat(Publisher<Publisher<T>> pubs){
 
         return reactiveStream(new LazyArrayConcatonatingOperator<T>(Spouts.from(pubs).seq()

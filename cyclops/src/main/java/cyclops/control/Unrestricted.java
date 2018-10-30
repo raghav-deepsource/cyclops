@@ -3,6 +3,10 @@ package cyclops.control;
 import com.oath.cyclops.types.functor.Transformable;
 import cyclops.function.Function3;
 import cyclops.data.tuple.*;
+import cyclops.function.Function4;
+import cyclops.function.Function5;
+import cyclops.function.Function6;
+import cyclops.function.Function7;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -12,7 +16,7 @@ import java.util.function.Function;
 
 /**
  * Java friendly version of Free (as in Unrestricted) monad for cyclops2
- * also see {@link cyclops.free.Free} for a more advanced type safe version
+ * also see cyclops.free.Free in cyclops-pure for a more advanced type safe version
  *
  * Inspiration and heavily influenced by https://github.com/xuwei-k/free-monad-java/blob/master/src/main/java/free/Free.java
  * Other influences incl :- http://www.slideshare.net/kenbot/running-free-with-the-monads
@@ -25,38 +29,77 @@ import java.util.function.Function;
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
 public abstract class Unrestricted<T> {
 
-    /**
-     * Created by johnmcclean on 11/05/2017.
-     */
     public static class Comprehensions {
+        public static <T, F, R1, R2, R3, R4,R5,R6,R7> Unrestricted<R7> forEach8(Unrestricted<T> io,
+                                                                                Function<? super T, Unrestricted<R1>> value2,
+                                                                                BiFunction<? super T, ? super R1, Unrestricted<R2>> value3,
+                                                                                Function3<? super T, ? super R1,? super  R2, Unrestricted<R3>> value4,
+                                                                                Function4<? super T, ? super R1,? super R2,? super R3, Unrestricted<R4>> value5,
+                                                                                Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Unrestricted<R5>> value6,
+                                                                                Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, Unrestricted<R6>> value7,
+                                                                                Function7<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, ? super R6, Unrestricted<R7>> value8)
 
-        public static <T,F,R1, R2, R3,R4,R5,R6,R7> Unrestricted<R7> forEach(Unrestricted<T> free,
-                                                                            Function<? super T, ? extends Unrestricted<R1>> value2,
-                                                                            Function<? super Tuple2<? super T,? super R1>, ? extends Unrestricted<R2>> value3,
-                                                                            Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Unrestricted<R3>> value4,
-                                                                            Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Unrestricted<R4>> value5,
-                                                                            Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Unrestricted<R5>> value6,
-                                                                            Function<? super Tuple6<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5>, ? extends Unrestricted<R6>> value7,
-                                                                            Function<? super Tuple7<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5, ? super R6>, ? extends Unrestricted<R7>> value8
-        ) {
+        {
 
-            return free.flatMap(in -> {
+            return io.flatMap(in -> {
 
                 Unrestricted<R1> a = value2.apply(in);
                 return a.flatMap(ina -> {
-                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in,ina));
+                    Unrestricted<R2> b = value3.apply(in, ina);
                     return b.flatMap(inb -> {
 
-                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
+                        Unrestricted<R3> c = value4.apply(in, ina, inb);
 
-                        return c.flatMap(inc->{
-                            Unrestricted<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
+                        return c.flatMap(inc -> {
+                            Unrestricted<R4> d = value5.apply(in, ina, inb, inc);
                             return d.flatMap(ind->{
-                                Unrestricted<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
+                                Unrestricted<R5> e = value6.apply(in,ina,inb,inc,ind);
                                 return e.flatMap(ine->{
-                                    Unrestricted<R6> f = value7.apply(Tuple.tuple(in,ina,inb,inc,ind,ine));
+                                    Unrestricted<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
                                     return f.flatMap(inf->{
-                                        Unrestricted<R7> g = value8.apply(Tuple.tuple(in,ina,inb,inc,ind,ine,inf));
+                                        Unrestricted<R7> g = value8.apply(in,ina,inb,inc,ind,ine,inf);
+                                        return g;
+                                    });
+                                });
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4, R5, R6, R7> Unrestricted<R7> forEach(Unrestricted<T> io,
+                                                                                  Function<? super T, Unrestricted<R1>> value2,
+                                                                                  Function<? super Tuple2<T, R1>, Unrestricted<R2>> value3,
+                                                                                  Function<? super Tuple3<T, R1, R2>, Unrestricted<R3>> value4,
+                                                                                  Function<? super Tuple4<T, R1, R2, R3>, Unrestricted<R4>> value5,
+                                                                                  Function<? super Tuple5<T,R1,R2, R3, R4>, Unrestricted<R5>> value6,
+                                                                                  Function<? super Tuple6<T,R1,R2,R3, R4,R5>, Unrestricted<R6>> value7,
+                                                                                  Function<? super Tuple7<T,R1,R2, R3, R4,R5, R6>, Unrestricted<R7>> value8
+        ) {
+
+            return io.flatMap(in -> {
+
+                Unrestricted<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Unrestricted<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Unrestricted<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Unrestricted<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
+                                    return f.flatMap(inf -> {
+                                        Unrestricted<R7> g = value8.apply(Tuple.tuple(in, ina, inb, inc, ind, ine, inf));
                                         return g;
 
                                     });
@@ -75,30 +118,69 @@ public abstract class Unrestricted<T> {
             });
 
         }
-        public static <T,F,R1, R2, R3,R4,R5,R6> Unrestricted<R6> forEach(Unrestricted<T> free,
-                                                                         Function<? super T, ? extends Unrestricted<R1>> value2,
-                                                                         Function<? super Tuple2<? super T,? super R1>, ? extends Unrestricted<R2>> value3,
-                                                                         Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Unrestricted<R3>> value4,
-                                                                         Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Unrestricted<R4>> value5,
-                                                                         Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Unrestricted<R5>> value6,
-                                                                         Function<? super Tuple6<T, ? super R1, ? super R2,? super R3, ? super R4, ? super R5>, ? extends Unrestricted<R6>> value7
-        ) {
+        public static <T, F, R1, R2, R3, R4,R5,R6> Unrestricted<R6> forEach7(Unrestricted<T> io,
+                                                                             Function<? super T, Unrestricted<R1>> value2,
+                                                                             BiFunction<? super T, ? super R1, Unrestricted<R2>> value3,
+                                                                             Function3<? super T, ? super R1,? super  R2, Unrestricted<R3>> value4,
+                                                                             Function4<? super T, ? super R1,? super R2,? super R3, Unrestricted<R4>> value5,
+                                                                             Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Unrestricted<R5>> value6,
+                                                                             Function6<? super T, ? super R1,? super R2,? super R3, ? super R4,? super R5, Unrestricted<R6>> value7)
 
-            return free.flatMap(in -> {
+        {
+
+            return io.flatMap(in -> {
 
                 Unrestricted<R1> a = value2.apply(in);
                 return a.flatMap(ina -> {
-                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in,ina));
+                    Unrestricted<R2> b = value3.apply(in, ina);
                     return b.flatMap(inb -> {
 
-                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
+                        Unrestricted<R3> c = value4.apply(in, ina, inb);
 
-                        return c.flatMap(inc->{
-                            Unrestricted<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
+                        return c.flatMap(inc -> {
+                            Unrestricted<R4> d = value5.apply(in, ina, inb, inc);
                             return d.flatMap(ind->{
-                                Unrestricted<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
+                                Unrestricted<R5> e = value6.apply(in,ina,inb,inc,ind);
                                 return e.flatMap(ine->{
-                                    Unrestricted<R6> f = value7.apply(Tuple.tuple(in,ina,inb,inc,ind,ine));
+                                    Unrestricted<R6> f = value7.apply(in,ina,inb,inc,ind,ine);
+                                    return f;
+                                });
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2, R3, R4, R5, R6> Unrestricted<R6> forEach(Unrestricted<T> io,
+                                                                              Function<? super T, Unrestricted<R1>> value2,
+                                                                              Function<? super Tuple2<T, R1>, Unrestricted<R2>> value3,
+                                                                              Function<? super Tuple3<T, R1, R2>, Unrestricted<R3>> value4,
+                                                                              Function<? super Tuple4<T, R1, R2, R3>, Unrestricted<R4>> value5,
+                                                                              Function<? super Tuple5<T, R1, R2, R3, R4>, Unrestricted<R5>> value6,
+                                                                              Function<? super Tuple6<T,  R1, R2,  R3, R4, R5>, Unrestricted<R6>> value7
+        ) {
+
+            return io.flatMap(in -> {
+
+                Unrestricted<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Unrestricted<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Unrestricted<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e.flatMap(ine -> {
+                                    Unrestricted<R6> f = value7.apply(Tuple.tuple(in, ina, inb, inc, ind, ine));
                                     return f;
                                 });
                             });
@@ -115,27 +197,28 @@ public abstract class Unrestricted<T> {
 
         }
 
-        public static <T,F,R1, R2, R3,R4,R5> Unrestricted<R5> forEach(Unrestricted<T> free,
-                                                                      Function<? super T, ? extends Unrestricted<R1>> value2,
-                                                                      Function<? super Tuple2<? super T,? super R1>, ? extends Unrestricted<R2>> value3,
-                                                                      Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Unrestricted<R3>> value4,
-                                                                      Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Unrestricted<R4>> value5,
-                                                                      Function<? super Tuple5<T, ? super R1, ? super R2,? super R3, ? super R4>, ? extends Unrestricted<R5>> value6
-        ) {
+        public static <T, F, R1, R2, R3, R4,R5> Unrestricted<R5> forEach6(Unrestricted<T> io,
+                                                                          Function<? super T, Unrestricted<R1>> value2,
+                                                                          BiFunction<? super T, ? super R1, Unrestricted<R2>> value3,
+                                                                          Function3<? super T, ? super R1,? super  R2, Unrestricted<R3>> value4,
+                                                                          Function4<? super T, ? super R1,? super R2,? super R3, Unrestricted<R4>> value5,
+                                                                          Function5<? super T, ? super R1,? super R2,? super R3, ? super R4, Unrestricted<R5>> value6)
 
-            return free.flatMap(in -> {
+        {
+
+            return io.flatMap(in -> {
 
                 Unrestricted<R1> a = value2.apply(in);
                 return a.flatMap(ina -> {
-                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in,ina));
+                    Unrestricted<R2> b = value3.apply(in, ina);
                     return b.flatMap(inb -> {
 
-                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
+                        Unrestricted<R3> c = value4.apply(in, ina, inb);
 
-                        return c.flatMap(inc->{
-                            Unrestricted<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
+                        return c.flatMap(inc -> {
+                            Unrestricted<R4> d = value5.apply(in, ina, inb, inc);
                             return d.flatMap(ind->{
-                                Unrestricted<R5> e = value6.apply(Tuple.tuple(in,ina,inb,inc,ind));
+                                Unrestricted<R5> e = value6.apply(in,ina,inb,inc,ind);
                                 return e;
                             });
                         });
@@ -149,25 +232,60 @@ public abstract class Unrestricted<T> {
             });
 
         }
-        public static <T,F,R1, R2, R3,R4> Unrestricted<R4> forEach(Unrestricted<T> free,
-                                                                   Function<? super T, ? extends Unrestricted<R1>> value2,
-                                                                   Function<? super Tuple2<? super T,? super R1>, ? extends Unrestricted<R2>> value3,
-                                                                   Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Unrestricted<R3>> value4,
-                                                                   Function<? super Tuple4<? super T, ? super R1, ? super R2,? super R3>, ? extends Unrestricted<R4>> value5
-
+        public static <T, F, R1, R2, R3, R4, R5> Unrestricted<R5> forEach(Unrestricted<T> io,
+                                                                          Function<? super T, Unrestricted<R1>> value2,
+                                                                          Function<? super Tuple2<T, R1>, Unrestricted<R2>> value3,
+                                                                          Function<? super Tuple3<T, R1,R2>, Unrestricted<R3>> value4,
+                                                                          Function<? super Tuple4<T, R1,R2,  R3>, Unrestricted<R4>> value5,
+                                                                          Function<? super Tuple5<T, R1, R2, R3, R4>, Unrestricted<R5>> value6
         ) {
 
-            return free.flatMap(in -> {
+            return io.flatMap(in -> {
 
                 Unrestricted<R1> a = value2.apply(in);
                 return a.flatMap(ina -> {
-                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in,ina));
+                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in, ina));
                     return b.flatMap(inb -> {
 
-                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
+                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
 
-                        return c.flatMap(inc->{
-                            Unrestricted<R4> d = value5.apply(Tuple.tuple(in,ina,inb,inc));
+                        return c.flatMap(inc -> {
+                            Unrestricted<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d.flatMap(ind -> {
+                                Unrestricted<R5> e = value6.apply(Tuple.tuple(in, ina, inb, inc, ind));
+                                return e;
+                            });
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3, R4> Unrestricted<R4> forEach5(Unrestricted<T> io,
+                                                                       Function<? super T, Unrestricted<R1>> value2,
+                                                                       BiFunction<? super T, ? super R1, Unrestricted<R2>> value3,
+                                                                       Function3<? super T, ? super R1,? super  R2, Unrestricted<R3>> value4,
+                                                                       Function4<? super T, ? super R1,? super R2,? super R3, Unrestricted<R4>> value5
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Unrestricted<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Unrestricted<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Unrestricted<R3> c = value4.apply(in, ina, inb);
+
+                        return c.flatMap(inc -> {
+                            Unrestricted<R4> d = value5.apply(in, ina, inb, inc);
                             return d;
                         });
 
@@ -180,21 +298,53 @@ public abstract class Unrestricted<T> {
             });
 
         }
-        public static <T,F,R1, R2, R3> Unrestricted<R3> forEach(Unrestricted<T> free,
-                                                                Function<? super T, ? extends Unrestricted<R1>> value2,
-                                                                Function<? super Tuple2<? super T,? super R1>, ? extends Unrestricted<R2>> value3,
-                                                                Function<? super Tuple3<? super T,? super R1,? super R2>, ? extends Unrestricted<R3>> value4
+        public static <T, F, R1, R2, R3, R4> Unrestricted<R4> forEach(Unrestricted<T> io,
+                                                                      Function<? super T, Unrestricted<R1>> value2,
+                                                                      Function<? super Tuple2<T, R1>, Unrestricted<R2>> value3,
+                                                                      Function<? super Tuple3<T, R1, R2>, Unrestricted<R3>> value4,
+                                                                      Function<? super Tuple4<T, R1, R2, R3>, Unrestricted<R4>> value5
 
         ) {
 
-            return free.flatMap(in -> {
+            return io.flatMap(in -> {
 
                 Unrestricted<R1> a = value2.apply(in);
                 return a.flatMap(ina -> {
-                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in,ina));
+                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in, ina));
                     return b.flatMap(inb -> {
 
-                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in,ina,inb));
+                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c.flatMap(inc -> {
+                            Unrestricted<R4> d = value5.apply(Tuple.tuple(in, ina, inb, inc));
+                            return d;
+                        });
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+
+        public static <T, F, R1, R2, R3> Unrestricted<R3> forEach4(Unrestricted<T> io,
+                                                                   Function<? super T, Unrestricted<R1>> value2,
+                                                                   BiFunction<? super T, ? super R1, Unrestricted<R2>> value3,
+                                                                   Function3<? super T, ? super R1,? super  R2, Unrestricted<R3>> value4
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Unrestricted<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Unrestricted<R2> b = value3.apply(in, ina);
+                    return b.flatMap(inb -> {
+
+                        Unrestricted<R3> c = value4.apply(in, ina, inb);
 
                         return c;
 
@@ -207,17 +357,44 @@ public abstract class Unrestricted<T> {
             });
 
         }
-        public static <T,F,R1, R2> Unrestricted<R2> forEach(Unrestricted<T> free,
-                                                            Function<? super T, ? extends Unrestricted<R1>> value2,
-                                                            Function<? super Tuple2<? super T,? super R1>, ? extends Unrestricted<R2>> value3
+        public static <T, F, R1, R2, R3> Unrestricted<R3> forEach(Unrestricted<T> io,
+                                                                  Function<? super T, Unrestricted<R1>> value2,
+                                                                  Function<? super Tuple2<T,R1>, Unrestricted<R2>> value3,
+                                                                  Function<? super Tuple3<T, R1, R2>, Unrestricted<R3>> value4
 
         ) {
 
-            return free.flatMap(in -> {
+            return io.flatMap(in -> {
 
                 Unrestricted<R1> a = value2.apply(in);
                 return a.flatMap(ina -> {
-                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in,ina));
+                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b.flatMap(inb -> {
+
+                        Unrestricted<R3> c = value4.apply(Tuple.tuple(in, ina, inb));
+
+                        return c;
+
+                    });
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1, R2> Unrestricted<R2> forEach3(Unrestricted<T> io,
+                                                               Function<? super T, Unrestricted<R1>> value2,
+                                                               BiFunction<? super T, ? super R1, Unrestricted<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Unrestricted<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Unrestricted<R2> b = value3.apply(in, ina);
                     return b;
 
 
@@ -227,13 +404,47 @@ public abstract class Unrestricted<T> {
             });
 
         }
-        public static <T,F,R1> Unrestricted<R1> forEach(Unrestricted<T> free,
-                                                        Function<? super T, ? extends Unrestricted<R1>> value2
+        public static <T, F, R1, R2> Unrestricted<R2> forEach(Unrestricted<T> io,
+                                                              Function<? super T, Unrestricted<R1>> value2,
+                                                              Function<? super Tuple2<T, R1>, Unrestricted<R2>> value3
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Unrestricted<R1> a = value2.apply(in);
+                return a.flatMap(ina -> {
+                    Unrestricted<R2> b = value3.apply(Tuple.tuple(in, ina));
+                    return b;
+
+
+                });
+
+
+            });
+
+        }
+        public static <T, F, R1> Unrestricted<R1> forEach2(Unrestricted<T> io,
+                                                           Function<? super T, Unrestricted<R1>> value2
+
+        ) {
+
+            return io.flatMap(in -> {
+
+                Unrestricted<R1> a = value2.apply(in);
+                return a;
+
+
+            });
+
+        }
+        public static <T, F, R1> Unrestricted<R1> forEach(Unrestricted<T> io,
+                                                          Function<? super T, Unrestricted<R1>> value2
 
 
         ) {
 
-            return free.flatMap(in -> {
+            return io.flatMap(in -> {
 
                 Unrestricted<R1> a = value2.apply(in);
                 return a;
@@ -251,7 +462,6 @@ public abstract class Unrestricted<T> {
      * This results in a four level nested internal iteration over the provided Computationss.
      *
      *
-     * @param value1 top level Unrestricted
      * @param value2 Nested Unrestricted
      * @param value3 Nested Unrestricted
      * @param value4 Nested Unrestricted
@@ -284,7 +494,6 @@ public abstract class Unrestricted<T> {
      * This results in a three level nested internal iteration over the provided Computationss.
      *
      *
-     * @param value1 top level Unrestricted
      * @param value2 Nested Unrestricted
      * @param value3 Nested Unrestricted
      * @return Resulting Unrestricted

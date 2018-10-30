@@ -92,7 +92,11 @@ public final class FluxIO<T> implements IO<T> {
 
     @Override
     public ReactiveSeq<T> stream() {
-        return Spouts.from(flowable);
+        return FluxReactiveSeq.reactiveSeq(flowable);
     }
 
+    @Override
+    public <R> IO<R> mergeMap(Function<? super T, Publisher<? extends R>> s) {
+        return of(flowable.flatMap(s));
+    }
 }

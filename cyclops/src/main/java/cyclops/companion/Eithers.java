@@ -17,6 +17,11 @@ import java.util.concurrent.BlockingQueue;
 public interface Eithers {
 
 
+    public static <X extends Throwable> Either<Throwable,X> cast(Throwable t, Class<X> clazz){
+        if(clazz.isAssignableFrom(t.getClass()))
+            return Either.right((X)t);
+        return Either.left(t);
+    }
 
 
     /**

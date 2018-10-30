@@ -57,6 +57,12 @@ public class ReactiveSeqTest {
     Throwable err;
 
     @Test
+    public void replay2(){
+        Stream<Integer> stream = ReactiveSeq.of(1,2,3);
+        System.out.println(stream.collect(Collectors.toList()));
+        System.out.println(stream.collect(Collectors.toList()));
+    }
+    @Test
     public void dropRightValues(){
         assertThat(of(1,2,3).dropRight(-1).seq(),equalTo(of(1,2,3).seq()));
         assertThat(of(1,2,3).dropRight(0).seq(),equalTo(of(1,2,3).seq()));
