@@ -3531,6 +3531,10 @@ public interface ReactiveSeq<T> extends To<ReactiveSeq<T>>,
     @Override
     ReactiveSeq<T> onEmptySwitch(final Supplier<? extends Stream<T>> switchTo) ;
 
+    default ReactiveSeq<T> onEmptySwitch2(final Supplier<? extends Stream<T>> switchTo) {
+        return onEmptySwitch(switchTo);
+    }
+
 
 
     @Override

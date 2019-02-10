@@ -681,10 +681,29 @@ public class ReactiveStreamX<T> extends BaseExtendedStream<T> {
         return createSeq(new OnEmptyOperator<T>(source, () -> value));
 
     }
+    @Override
+    public ReactiveSeq<T> onEmptySwitch2(final Supplier<? extends Stream<T>> switchTo) {
+        return createSeq(new OnEmptySwitchOperator<T>(source, switchTo));
 
+        /** final Object value = new Object();
+         ReactiveSeq res = createSeq(onEmptyGet((Supplier) () -> value).flatMap(s -> {
+         if (s == value)
+         return (Stream) switchTo.get();
+         return Stream.of(s);
+         }));
+         return res;
+         **/
+    }
     @Override
     public ReactiveSeq<T> onEmptySwitch(final Supplier<? extends Stream<T>> switchTo) {
-        return createSeq(new OnEmptySwitchOperator<T>(source, switchTo));
+         final Object value = new Object();
+        ReactiveSeq res = createSeq(onEmptyGet((Supplier) () -> value).flatMap(s -> {
+            if (s == value)
+                return (Stream) switchTo.get();
+            return Stream.of(s);
+        }));
+        return res;
+
     }
 
     @Override
