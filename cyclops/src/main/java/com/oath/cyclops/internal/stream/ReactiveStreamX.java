@@ -684,13 +684,7 @@ public class ReactiveStreamX<T> extends BaseExtendedStream<T> {
 
     @Override
     public ReactiveSeq<T> onEmptySwitch(final Supplier<? extends Stream<T>> switchTo) {
-        final Object value = new Object();
-        ReactiveSeq res = createSeq(onEmptyGet((Supplier) () -> value).flatMap(s -> {
-            if (s == value)
-                return (Stream) switchTo.get();
-            return Stream.of(s);
-        }));
-        return res;
+        return createSeq(new OnEmptySwitchOperator<T>(source, switchTo));
     }
 
     @Override
