@@ -23,7 +23,7 @@ public class OnEmptySwitchOperator<T> extends BaseOperator<T,T> {
 
 
     }
-    /**
+
     @Override
     public StreamSubscription subscribe(Consumer<? super T> onNext, Consumer<? super Throwable> onError, Runnable onComplete) {
         Stream<T> stream = value.get();
@@ -65,7 +65,7 @@ public class OnEmptySwitchOperator<T> extends BaseOperator<T,T> {
         return sub;
     }
 
-   **/
+   /**
 
     @Override
     public StreamSubscription subscribe(Consumer<? super T> onNext, Consumer<? super Throwable> onError, Runnable onComplete) {
@@ -94,7 +94,7 @@ public class OnEmptySwitchOperator<T> extends BaseOperator<T,T> {
         proxySubscription.setSub(upstream);
         return proxySubscription;
     }
-
+**/
     @Override
     public void subscribeAll(Consumer<? super T> onNext, Consumer<? super Throwable> onError, Runnable onCompleteDs) {
 
